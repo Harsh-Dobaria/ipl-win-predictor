@@ -7,7 +7,7 @@ This project predicts the probability of a team winning an IPL match at any give
 ---
 ## IPL Win Probability Predictor
 
-🔗 Live Demo: https://your-app-name.streamlit.app](https://ipl-win-predictor-n2hapr25geseljviwz7fdf.streamlit.app/
+🔗 Live Demo: https://ipl-win-predictor-n2hapr25geseljviwz7fdf.streamlit.app/
 
 ## Problem Statement
 
