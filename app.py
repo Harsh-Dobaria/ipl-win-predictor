@@ -24,25 +24,58 @@ st.subheader("Match Situation")
 st.info("Example: 120 runs, target 160, 15 overs 2 balls, 6 wickets lost")                             
 col1, col2 = st.columns(2)
 
+
+if "score" not in st.session_state:
+    st.session_state.score = 0
+if "target" not in st.session_state:
+    st.session_state.target = 1
+if "wickets" not in st.session_state:
+    st.session_state.wickets = 0
+if "overs" not in st.session_state:
+    st.session_state.overs = 0
+if "balls" not in st.session_state:
+    st.session_state.balls = 0
+
 with col1:
-    current_score = st.number_input("Current Score", min_value=0)
-    target = st.number_input("Target Score", min_value=1)
-    wickets_lost = st.number_input("Wickets Lost", min_value=0, max_value=10)
+    current_score = st.number_input("Current Score", min_value=0, key="score")
+    target = st.number_input("Target Score", min_value=1, key="target")
+    wickets_lost = st.number_input("Wickets Lost", min_value=0, max_value=10, key="wickets")
 
 with col2:
-    overs = st.number_input("Overs", min_value=0, max_value=20)
-    balls = st.number_input("Balls (0–5)", min_value=0, max_value=5)
+    overs = st.number_input("Overs", min_value=0, max_value=20, key="overs")
+    balls = st.number_input("Balls (0–5)", min_value=0, max_value=5, key="balls")
 
 # ------------------ VALIDATION ------------------
+
 if current_score > target:
     st.error("Score cannot exceed target")
     st.stop()
 
-if st.button("Reset"):
+is_valid = (
+    target > 0 and
+    current_score >= 0 and
+    wickets_lost >= 0 and
+    (overs > 0 or balls > 0)
+)
+
+col_btn1, col_btn2 = st.columns(2)
+
+with col_btn1:
+    predict_clicked = st.button(
+        "Predict",
+        key="predict_btn",
+        disabled=not is_valid
+    )
+
+with col_btn2:
+    reset_clicked = st.button("Reset", key="reset_btn")
+    
+if reset_clicked:
+    st.session_state.clear()
     st.rerun()
     
 # ------------------ PREDICTION ------------------
-if st.button("Predict"):
+if predict_clicked:
 
     balls_bowled = overs * 6 + balls
     balls_remaining = 120 - balls_bowled
